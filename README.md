@@ -30,13 +30,15 @@ sudo apt install depthai_2.15.3_amd64.deb
 ```shell
 mkdir build 
 cmake -S . -B build 
-cmake --build build
+cmake --build build 
+# cmake --build build --target ...
 ```
 
 ## Windows
 ```shell
-cmake -S . -B build -D"depthai_DIR=<path>/depthai-core-v{version}-win64/lib/cmake" -D"OpenCV_DIR=<path>/opencv/build"
+cmake -S . -B build -D"depthai_DIR=<path>/depthai-core-v{version}-win64/lib/cmake/depthai" -D"OpenCV_DIR=<path>/opencv/build"
 cmake --build build
+# cmake --build build --target ...
 ```
 
 > Tips:
@@ -45,7 +47,7 @@ cmake --build build
 > + `-DCMAKE_BUILD_TYPE=Release/Debug/...`: 指定 CMAKE 构建类型
 
 `OpenCV_DIR=<path>/opencv/build` 目录结构： 
-``` 
+```shell
 ├───bin
 ├───etc
 ├───include
@@ -56,4 +58,13 @@ cmake --build build
 ├───OpenCVConfig.cmake
 ├───OpenCVConfig-version.cmake
 └───setup_vars_opencv4.cmd
+```
+`depthai_DIR=<path>/depthai-core-v{version}-win64/lib/cmake/depthai` 目录结构： 
+```shell
+├── dependencies
+├── depthaiConfig.cmake
+├── depthaiConfigVersion.cmake
+├── depthaiDependencies.cmake
+├── depthaiTargets.cmake
+└── depthaiTargets-release.cmake
 ```
