@@ -5,6 +5,7 @@ HunterGate(
         SHA1 "4942227a6e6f5e64414c55b97ef98609de199d18"
         # LOCAL
 )
+
 project("DepthaiExample")
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -27,7 +28,6 @@ endif ()
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
 endif ()
-set(HUNTER_CONFIGURATION_TYPES "Release" CACHE STRING "Hunter dependencies list of build configurations")
 
 include(GNUInstallDirs)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
@@ -55,7 +55,39 @@ foreach (p LIB BIN INCLUDE CMAKE)
     message(STATUS "Installing ${p} components to ${_path}")
     unset(_path)
 endforeach ()
-set(BUILD_SHARED_LIBS)
+
+# 用于添加新示例
+function(dai_add_example example_name example_src)
+
+    # parse the rest of the arguments
+    set(arguments ${ARGV})
+    list(REMOVE_AT arguments 0 1)
+
+    # 添加示例
+    add_executable(${example_name} ${example_src})
+    target_link_libraries(${example_name} PRIVATE utility depthai::opencv arguments)
+    if (WIN32)
+        add_custom_command(TARGET ${example_name}
+                # 在目标中的所有其他规则都已执行后运行
+                POST_BUILD
+                # 指定要在构建时执行的命令行
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:${example_name}> $<TARGET_FILE_DIR:${example_name}>
+                # 参数中的列表COMMAND将被扩展, 包括那些用生成器表达式创建的列表
+                COMMAND_EXPAND_LISTS
+                )
+        install(TARGETS ${example_name} RUNTIME_DEPENDENCY_SET runtime_set)
+    else ()
+        install(TARGETS ${example_name})
+    endif ()
+
+    if (NOT MSVC)
+        target_compile_options(${example_name} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-Werror=return-type>)
+    endif ()
+
+
+endfunction()
+
+
 message(CHECK_START "Finding depthai")
 find_package(depthai CONFIG QUIET)
 if (NOT depthai_FOUND)
@@ -110,8 +142,6 @@ if (depthai_FOUND)
     set(CMAKE_PREFIX_PATH ${_CMAKE_PREFIX_PATH_ORIGINAL})
 endif ()
 
-add_subdirectory(get_network_info)
-
 message(CHECK_START "Finding OpenCV")
 if (NOT OpenCV_FOUND)
     set(OpenCV_DIR ${OpenCV_DIR_CACHE})
@@ -120,11 +150,17 @@ endif ()
 if (OpenCV_FOUND)
     message(CHECK_PASS "${OpenCV_DIR} (version: ${OpenCV_VERSION})")
     set(OpenCV_DIR_CACHE ${OpenCV_DIR} CACHE PATH "The directory containing a CMake configuration file for OpenCV.")
-    add_subdirectory(examples)
-    add_subdirectory(full_resolution)
 else ()
     message(CHECK_FAIL "not found")
 endif ()
+
+if (OpenCV_FOUND)
+    add_subdirectory(utility)
+    add_subdirectory(examples)
+endif ()
+
+add_subdirectory(get_network_info)
+
 
 if (WIN32)
     # https://cmake.org/cmake/help/latest/command/file.html#get-runtime-dependencies

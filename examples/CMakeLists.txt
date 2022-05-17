@@ -1,46 +1,3 @@
-# 依赖项
-find_package(OpenCV CONFIG)
-if (NOT OpenCV_FOUND)
-    if (WIN32)
-        hunter_add_package(OpenCV)
-        find_package(OpenCV CONFIG)
-    else ()
-        message(FATAL_ERROR "OpenCV_NOTFOUND")
-    endif ()
-endif ()
-
-# 创建 utility 库
-add_library(utility utility/utility.cpp)
-target_include_directories(utility PUBLIC "utility")
-target_link_libraries(utility FP16::fp16 opencv_highgui)
-install(TARGETS utility RUNTIME_DEPENDENCY_SET runtime_set)
-# 用于添加新示例
-function(dai_add_example example_name example_src)
-
-    # 添加示例
-    add_executable(${example_name} ${example_src})
-    target_link_libraries(${example_name} PRIVATE utility depthai::opencv)
-    if (WIN32)
-        add_custom_command(TARGET ${example_name}
-                # 在目标中的所有其他规则都已执行后运行
-                POST_BUILD
-                # 指定要在构建时执行的命令行
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:${example_name}> $<TARGET_FILE_DIR:${example_name}>
-                # 参数中的列表COMMAND将被扩展, 包括那些用生成器表达式创建的列表
-                COMMAND_EXPAND_LISTS
-                )
-        install(TARGETS ${example_name} RUNTIME_DEPENDENCY_SET runtime_set)
-    else()
-        install(TARGETS ${example_name})
-    endif ()
-
-    if(NOT MSVC)
-        target_compile_options(${example_name} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-Werror=return-type>)
-    endif()
-
-
-endfunction()
-
 # NeuralNetwork node, mobilenet example
 hunter_private_data(
         URL "https://artifacts.luxonis.com/artifactory/luxonis-depthai-data-local/network/mobilenet-ssd_openvino_2021.4_6shave.blob"
@@ -137,53 +94,53 @@ hunter_private_data(
 
 
 # bootloader
-dai_add_example(bootloader_version bootloader/bootloader_version.cpp ON)
-dai_add_example(flash_bootloader bootloader/flash_bootloader.cpp OFF)
-dai_add_example(bootloader_config bootloader/bootloader_config.cpp ON read)
-dai_add_example(poe_set_ip bootloader/poe_set_ip.cpp OFF)
+dai_add_example(bootloader_version bootloader/bootloader_version.cpp )
+dai_add_example(flash_bootloader bootloader/flash_bootloader.cpp )
+dai_add_example(bootloader_config bootloader/bootloader_config.cpp )
+dai_add_example(poe_set_ip bootloader/poe_set_ip.cpp )
 
 # calibration
-dai_add_example(calibration_flash calibration/calibration_flash.cpp OFF)
-dai_add_example(calibration_flash_version5 calibration/calibration_flash_v5.cpp OFF)
-dai_add_example(calibration_load calibration/calibration_load.cpp ON)
-dai_add_example(calibration_reader calibration/calibration_reader.cpp ON)
+dai_add_example(calibration_flash calibration/calibration_flash.cpp )
+dai_add_example(calibration_flash_version5 calibration/calibration_flash_v5.cpp )
+dai_add_example(calibration_load calibration/calibration_load.cpp )
+dai_add_example(calibration_reader calibration/calibration_reader.cpp )
 
 target_compile_definitions(calibration_flash PRIVATE CALIB_PATH="${calib_v6}")
 target_compile_definitions(calibration_flash_version5 PRIVATE CALIB_PATH="${calib_v5}" BOARD_PATH="${device_config}")
 target_compile_definitions(calibration_load PRIVATE CALIB_PATH="${calib_v6}")
 
 # ColorCamera
-dai_add_example(rgb_camera_control ColorCamera/rgb_camera_control.cpp ON)
-dai_add_example(rgb_preview ColorCamera/rgb_preview.cpp ON)
-dai_add_example(rgb_video ColorCamera/rgb_video.cpp ON)
+dai_add_example(rgb_camera_control ColorCamera/rgb_camera_control.cpp )
+dai_add_example(rgb_preview ColorCamera/rgb_preview.cpp )
+dai_add_example(rgb_video ColorCamera/rgb_video.cpp )
 
 # EdgeDetector
-dai_add_example(edge_detector EdgeDetector/edge_detector.cpp ON)
+dai_add_example(edge_detector EdgeDetector/edge_detector.cpp )
 
 # FeatureTracker
-dai_add_example(feature_detector FeatureTracker/feature_detector.cpp ON)
-dai_add_example(feature_tracker FeatureTracker/feature_tracker.cpp ON)
+dai_add_example(feature_detector FeatureTracker/feature_detector.cpp )
+dai_add_example(feature_tracker FeatureTracker/feature_tracker.cpp )
 
 # host_side
-dai_add_example(device_queue_event host_side/device_queue_event.cpp ON)
-dai_add_example(opencv_support host_side/opencv_support.cpp ON)
-dai_add_example(queue_add_callback host_side/queue_add_callback.cpp ON)
+dai_add_example(device_queue_event host_side/device_queue_event.cpp )
+dai_add_example(opencv_support host_side/opencv_support.cpp )
+dai_add_example(queue_add_callback host_side/queue_add_callback.cpp )
 
 # ImageManip
-dai_add_example(image_manip ImageManip/image_manip_example.cpp ON)
-dai_add_example(image_manip_rotate ImageManip/image_manip_rotate.cpp ON)
-dai_add_example(image_manip_tiling ImageManip/image_manip_tiling.cpp ON)
-dai_add_example(rgb_rotate_warp ImageManip/rgb_rotate_warp.cpp ON)
+dai_add_example(image_manip ImageManip/image_manip_example.cpp )
+dai_add_example(image_manip_rotate ImageManip/image_manip_rotate.cpp )
+dai_add_example(image_manip_tiling ImageManip/image_manip_tiling.cpp )
+dai_add_example(rgb_rotate_warp ImageManip/rgb_rotate_warp.cpp )
 
 # IMU
-dai_add_example(imu_gyroscope_accelerometer IMU/imu_gyroscope_accelerometer.cpp ON)
-dai_add_example(imu_rotation_vector IMU/imu_rotation_vector.cpp ON)
+dai_add_example(imu_gyroscope_accelerometer IMU/imu_gyroscope_accelerometer.cpp )
+dai_add_example(imu_rotation_vector IMU/imu_rotation_vector.cpp )
 
 # mixed
-dai_add_example(mono_depth_mobilenetssd mixed/mono_depth_mobilenetssd.cpp ON)
-dai_add_example(rgb_encoding_mono_mobilenet mixed/rgb_encoding_mono_mobilenet.cpp ON)
-dai_add_example(rgb_encoding_mono_mobilenet_depth mixed/rgb_encoding_mono_mobilenet_depth.cpp ON)
-dai_add_example(rgb_encoding_mobilenet mixed/rgb_encoding_mobilenet.cpp ON)
+dai_add_example(mono_depth_mobilenetssd mixed/mono_depth_mobilenetssd.cpp )
+dai_add_example(rgb_encoding_mono_mobilenet mixed/rgb_encoding_mono_mobilenet.cpp )
+dai_add_example(rgb_encoding_mono_mobilenet_depth mixed/rgb_encoding_mono_mobilenet_depth.cpp )
+dai_add_example(rgb_encoding_mobilenet mixed/rgb_encoding_mobilenet.cpp )
 
 target_compile_definitions(mono_depth_mobilenetssd PRIVATE BLOB_PATH="${mobilenet_blob}")
 target_compile_definitions(rgb_encoding_mono_mobilenet PRIVATE BLOB_PATH="${mobilenet_blob}")
@@ -191,13 +148,13 @@ target_compile_definitions(rgb_encoding_mono_mobilenet_depth PRIVATE BLOB_PATH="
 target_compile_definitions(rgb_encoding_mobilenet PRIVATE BLOB_PATH="${mobilenet_blob}")
 
 # MobileNet
-dai_add_example(camera_mobilenet_sync MobileNet/camera_mobilenet_sync_example.cpp ON)
-dai_add_example(rgb_mobilenet MobileNet/rgb_mobilenet.cpp ON)
-dai_add_example(rgb_mobilenet_4k MobileNet/rgb_mobilenet_4k.cpp ON)
-dai_add_example(mono_mobilenet MobileNet/mono_mobilenet.cpp ON)
-dai_add_example(video_mobilenet MobileNet/video_mobilenet.cpp ON)
+dai_add_example(camera_mobilenet_sync MobileNet/camera_mobilenet_sync_example.cpp )
+dai_add_example(rgb_mobilenet MobileNet/rgb_mobilenet.cpp )
+dai_add_example(rgb_mobilenet_4k MobileNet/rgb_mobilenet_4k.cpp )
+dai_add_example(mono_mobilenet MobileNet/mono_mobilenet.cpp )
+dai_add_example(video_mobilenet MobileNet/video_mobilenet.cpp )
 # Usually not available - removed from tests
-dai_add_example(webcam_mobilenet MobileNet/webcam_mobilenet_example.cpp OFF)
+dai_add_example(webcam_mobilenet MobileNet/webcam_mobilenet_example.cpp )
 
 target_compile_definitions(camera_mobilenet_sync PRIVATE BLOB_PATH="${mobilenet_blob}")
 target_compile_definitions(rgb_mobilenet PRIVATE BLOB_PATH="${mobilenet_blob}" ON)
@@ -207,21 +164,21 @@ target_compile_definitions(video_mobilenet PRIVATE BLOB_PATH="${mobilenet_8shave
 target_compile_definitions(webcam_mobilenet PRIVATE BLOB_PATH="${mobilenet_8shaves_blob}")
 
 # MonoCamera
-dai_add_example(mono_camera_control MonoCamera/mono_camera_control.cpp ON)
-dai_add_example(mono_preview MonoCamera/mono_preview.cpp ON)
-dai_add_example(mono_full_resolution_saver MonoCamera/mono_full_resolution_saver.cpp ON)
+dai_add_example(mono_camera_control MonoCamera/mono_camera_control.cpp )
+dai_add_example(mono_preview MonoCamera/mono_preview.cpp )
+dai_add_example(mono_full_resolution_saver MonoCamera/mono_full_resolution_saver.cpp )
 
 # NeuralNetwork
-dai_add_example(concatenate NeuralNetwork/concat_multi_input.cpp ON)
-dai_add_example(normalize NeuralNetwork/normalization_multi_input.cpp ON)
+dai_add_example(concatenate NeuralNetwork/concat_multi_input.cpp )
+dai_add_example(normalize NeuralNetwork/normalization_multi_input.cpp )
 
 target_compile_definitions(concatenate PRIVATE BLOB_PATH="${concat_model}")
 target_compile_definitions(normalize PRIVATE BLOB_PATH="${normalization_model}")
 
 # ObjectTracker
-dai_add_example(object_tracker ObjectTracker/object_tracker.cpp ON)
-dai_add_example(spatial_object_tracker ObjectTracker/spatial_object_tracker.cpp ON)
-dai_add_example(object_tracker_video ObjectTracker/object_tracker_video.cpp ON)
+dai_add_example(object_tracker ObjectTracker/object_tracker.cpp )
+dai_add_example(spatial_object_tracker ObjectTracker/spatial_object_tracker.cpp )
+dai_add_example(object_tracker_video ObjectTracker/object_tracker_video.cpp )
 
 target_compile_definitions(object_tracker PRIVATE BLOB_PATH="${mobilenet_blob}")
 target_compile_definitions(spatial_object_tracker PRIVATE BLOB_PATH="${mobilenet_5shaves_blob}")
