@@ -29,13 +29,16 @@ function(dai_add_example example_name example_src)
                 # 参数中的列表COMMAND将被扩展, 包括那些用生成器表达式创建的列表
                 COMMAND_EXPAND_LISTS
                 )
+        install(TARGETS ${example_name} RUNTIME_DEPENDENCY_SET runtime_set)
+    else()
+        install(TARGETS ${example_name})
     endif ()
 
     if(NOT MSVC)
         target_compile_options(${example_name} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-Werror=return-type>)
     endif()
 
-    install(TARGETS ${example_name} RUNTIME_DEPENDENCY_SET runtime_set)
+
 endfunction()
 
 # NeuralNetwork node, mobilenet example
