@@ -65,7 +65,7 @@ function(dai_add_example example_name example_src)
 
     # 添加示例
     add_executable(${example_name} ${example_src})
-    target_link_libraries(${example_name} PRIVATE utility depthai::opencv arguments)
+    target_link_libraries(${example_name} PRIVATE utility depthai::opencv ${arguments})
     if (WIN32)
         add_custom_command(TARGET ${example_name}
                 # 在目标中的所有其他规则都已执行后运行
