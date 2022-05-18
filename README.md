@@ -1,3 +1,5 @@
+
+> 推荐使用 cmake 3.21 以上版本 
 # 安装依赖
 前往 [depthai-core](https://gitee.com/oakchina/depthai-core/releases) 下载 `depthai-core` 预编译文件
 
