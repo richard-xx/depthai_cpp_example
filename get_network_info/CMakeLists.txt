@@ -24,5 +24,3 @@ endif ()
 if(NOT MSVC)
     target_compile_options(GetNetworkInfo PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-Werror=return-type>)
 endif()
-
-install(TARGETS GetNetworkInfo RUNTIME_DEPENDENCY_SET runtime_set)
