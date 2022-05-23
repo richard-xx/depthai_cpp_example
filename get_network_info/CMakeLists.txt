@@ -17,10 +17,10 @@ if (WIN32)
             COMMAND_EXPAND_LISTS
             )
     install(TARGETS GetNetworkInfo RUNTIME_DEPENDENCY_SET runtime_set)
-else()
+else ()
     install(TARGETS GetNetworkInfo)
 endif ()
 
-if(NOT MSVC)
+if (NOT MSVC)
     target_compile_options(GetNetworkInfo PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-Werror=return-type>)
-endif()
+endif ()
