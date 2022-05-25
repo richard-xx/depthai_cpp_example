@@ -26,7 +26,7 @@ sudo apt install depthai_2.15.3_amd64.deb
 > _**WIP**_
 > 
 > ```shell
-> sudo wget -O - https://richard-xx.github.io/ppa/depthai/KEY.gpg | sudo apt-key add -
+> sudo wget -O - https://richard-xx.github.io/ppa/depthai/KEY.gpg | sudo tee /etc/apt/trusted.gpg.d/richard_depthai.asc
 > sudo wget -O /etc/apt/sources.list.d/depthai-ppa.list https://richard-xx.github.io/ppa/depthai/depthai-ppa.list
 > sudo apt update
 > sudo apt install depthai
