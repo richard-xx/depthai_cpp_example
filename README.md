@@ -23,15 +23,16 @@ sudo apt install -y libusb-1.0-0-dev libopencv-dev
 # 例如
 sudo apt install depthai_2.15.3_amd64.deb
 ```
-> _**WIP**_
-> 
-> ```shell
-> sudo wget -O - https://richard-xx.github.io/ppa/depthai/KEY.gpg | sudo tee /etc/apt/trusted.gpg.d/richard_depthai.asc
-> sudo wget -O /etc/apt/sources.list.d/depthai-ppa.list https://richard-xx.github.io/ppa/depthai/depthai-ppa.list
-> sudo apt update
-> sudo apt install depthai
-> ```
->
+
+### PPA
+> 支持架构 ： amd64(x86_64) arm64(aarch64) armhf(arm32) 
+```shell
+sudo wget -O - https://richard-xx.github.io/ppa/depthai/KEY.gpg | sudo tee /etc/apt/trusted.gpg.d/richard_depthai.asc
+sudo wget -O /etc/apt/sources.list.d/depthai-ppa.list https://richard-xx.github.io/ppa/depthai/depthai-ppa.list
+sudo apt update
+sudo apt install depthai
+```
+
 
 
 ## Windows
