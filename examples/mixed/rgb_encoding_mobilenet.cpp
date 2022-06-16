@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <iomanip>
 // Includes common necessary includes for development using depthai library
 #include "depthai/depthai.hpp"
 

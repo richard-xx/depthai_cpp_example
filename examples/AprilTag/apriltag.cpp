@@ -1,6 +1,6 @@
 #include <chrono>
 #include <iostream>
-
+#include <iomanip>
 // Inludes common necessary includes for development using depthai library
 #include "depthai/depthai.hpp"
 

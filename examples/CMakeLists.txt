@@ -104,6 +104,7 @@ dai_add_example(calibration_flash calibration/calibration_flash.cpp)
 dai_add_example(calibration_flash_version5 calibration/calibration_flash_v5.cpp)
 dai_add_example(calibration_load calibration/calibration_load.cpp)
 dai_add_example(calibration_reader calibration/calibration_reader.cpp)
+dai_add_example(calibration_dump calibration/calibration_dump.cpp)
 
 target_compile_definitions(calibration_flash PRIVATE CALIB_PATH="${calib_v6}")
 target_compile_definitions(calibration_flash_version5 PRIVATE CALIB_PATH="${calib_v5}" BOARD_PATH="${device_config}")
@@ -154,10 +155,11 @@ dai_add_example(rgb_mobilenet_4k MobileNet/rgb_mobilenet_4k.cpp)
 dai_add_example(mono_mobilenet MobileNet/mono_mobilenet.cpp)
 dai_add_example(video_mobilenet MobileNet/video_mobilenet.cpp)
 # Usually not available - removed from tests
+# TODO - add to a separate group if possible
 dai_add_example(webcam_mobilenet MobileNet/webcam_mobilenet_example.cpp)
 
 target_compile_definitions(camera_mobilenet_sync PRIVATE BLOB_PATH="${mobilenet_blob}")
-target_compile_definitions(rgb_mobilenet PRIVATE BLOB_PATH="${mobilenet_blob}" ON)
+target_compile_definitions(rgb_mobilenet PRIVATE BLOB_PATH="${mobilenet_blob}")
 target_compile_definitions(rgb_mobilenet_4k PRIVATE BLOB_PATH="${mobilenet_5shaves_blob}")
 target_compile_definitions(mono_mobilenet PRIVATE BLOB_PATH="${mobilenet_blob}")
 target_compile_definitions(video_mobilenet PRIVATE BLOB_PATH="${mobilenet_8shaves_blob}" VIDEO_PATH="${construction_vest}")
@@ -232,3 +234,7 @@ target_compile_definitions(tiny_yolo_v4_device_side_decoding PRIVATE BLOB_PATH="
 target_compile_definitions(tiny_yolo_v3_device_side_decoding PRIVATE BLOB_PATH="${tiny_yolo_v3_blob}")
 dai_add_example(apriltag AprilTag/apriltag.cpp)
 dai_add_example(apriltag_rgb AprilTag/apriltag_rgb.cpp)
+
+# DetectionParser
+dai_add_example(detection_parser NeuralNetwork/detection_parser.cpp)
+target_compile_definitions(detection_parser PRIVATE BLOB_PATH="${mobilenet_blob}")

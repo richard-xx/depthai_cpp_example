@@ -1,6 +1,7 @@
 #include <chrono>
+#include <cstdio>
 #include <iostream>
-#include <iomanip>
+
 #include "utility.hpp"
 
 // Includes common necessary includes for development using depthai library
@@ -11,53 +12,74 @@ static const std::vector<std::string> labelMap = {"background", "aeroplane", "bi
                                                   "car",        "cat",       "chair",       "cow",   "diningtable", "dog",    "horse",
                                                   "motorbike",  "person",    "pottedplant", "sheep", "sofa",        "train",  "tvmonitor"};
 
+static std::atomic<bool> syncNN{true};
+
 int main(int argc, char** argv) {
     using namespace std;
     using namespace std::chrono;
     // Default blob path provided by Hunter private data download
     // Applicable for easier example usage only
     std::string nnPath(BLOB_PATH);
-    std::string videoPath(VIDEO_PATH);
 
     // If path to blob specified, use that
-    if(argc > 2) {
+    if(argc > 1) {
         nnPath = std::string(argv[1]);
-        videoPath = std::string(argv[2]);
     }
 
     // Print which blob we are using
     printf("Using blob at path: %s\n", nnPath.c_str());
-    printf("Using video at path: %s\n", videoPath.c_str());
 
     // Create pipeline
     dai::Pipeline pipeline;
 
-    // Define source and outputs
-    auto nn = pipeline.create<dai::node::MobileNetDetectionNetwork>();
-
-    auto xinFrame = pipeline.create<dai::node::XLinkIn>();
+    // Define sources and outputs
+    auto camRgb = pipeline.create<dai::node::ColorCamera>();
+    auto nn = pipeline.create<dai::node::NeuralNetwork>();
+    auto det = pipeline.create<dai::node::DetectionParser>();
+    auto xoutRgb = pipeline.create<dai::node::XLinkOut>();
     auto nnOut = pipeline.create<dai::node::XLinkOut>();
 
-    xinFrame->setStreamName("inFrame");
+    xoutRgb->setStreamName("rgb");
     nnOut->setStreamName("nn");
 
     // Properties
-    nn->setConfidenceThreshold(0.5);
-    nn->setBlobPath(nnPath);
+    camRgb->setPreviewSize(300, 300);  // NN input
+    camRgb->setInterleaved(false);
+    camRgb->setFps(40);
+    // Define a neural network that will make predictions based on the source frames
     nn->setNumInferenceThreads(2);
     nn->input.setBlocking(false);
 
+    dai::OpenVINO::Blob blob(nnPath);
+    nn->setBlob(blob);
+    det->setBlob(blob);
+    det->setNNFamily(DetectionNetworkType::MOBILENET);
+    det->setConfidenceThreshold(0.5);
+
     // Linking
-    xinFrame->out.link(nn->input);
-    nn->out.link(nnOut->input);
+    if(syncNN) {
+        nn->passthrough.link(xoutRgb->input);
+    } else {
+        camRgb->preview.link(xoutRgb->input);
+    }
+
+    camRgb->preview.link(nn->input);
+    nn->out.link(det->input);
+    det->out.link(nnOut->input);
 
     // Connect to device and start pipeline
     dai::Device device(pipeline);
 
-    // Input queue will be used to send video frames to the device.
-    auto qIn = device.getInputQueue("inFrame");
-    // Output queue will be used to get nn data from the video frames.
+    // Output queues will be used to get the rgb frames and nn data from the outputs defined above
+    auto qRgb = device.getOutputQueue("rgb", 4, false);
     auto qDet = device.getOutputQueue("nn", 4, false);
+
+    cv::Mat frame;
+    std::vector<dai::ImgDetection> detections;
+    auto startTime = steady_clock::now();
+    int counter = 0;
+    float fps = 0;
+    auto color2 = cv::Scalar(255, 255, 255);
 
     // Add bounding boxes and text to the frame and show it to the user
     auto displayFrame = [](std::string name, cv::Mat frame, std::vector<dai::ImgDetection>& detections) {
@@ -84,33 +106,46 @@ int main(int argc, char** argv) {
         cv::imshow(name, frame);
     };
 
-    cv::Mat frame;
-    cv::VideoCapture cap(videoPath);
+    while(true) {
+        std::shared_ptr<dai::ImgFrame> inRgb;
+        std::shared_ptr<dai::ImgDetections> inDet;
 
-    cv::namedWindow("inFrame", cv::WINDOW_NORMAL);
-    cv::resizeWindow("inFrame", 1280, 720);
-    std::cout << "Resize video window with mouse drag!" << std::endl;
+        if(syncNN) {
+            inRgb = qRgb->get<dai::ImgFrame>();
+            inDet = qDet->get<dai::ImgDetections>();
+        } else {
+            inRgb = qRgb->tryGet<dai::ImgFrame>();
+            inDet = qDet->tryGet<dai::ImgDetections>();
+        }
 
-    while(cap.isOpened()) {
-        // Read frame from video
-        cap >> frame;
-        if(frame.empty()) break;
+        counter++;
+        auto currentTime = steady_clock::now();
+        auto elapsed = duration_cast<duration<float>>(currentTime - startTime);
+        if(elapsed > seconds(1)) {
+            fps = counter / elapsed.count();
+            counter = 0;
+            startTime = currentTime;
+        }
 
-        auto img = std::make_shared<dai::ImgFrame>();
-        frame = resizeKeepAspectRatio(frame, cv::Size(300, 300), cv::Scalar(0));
-        toPlanar(frame, img->getData());
-        img->setTimestamp(steady_clock::now());
-        img->setWidth(300);
-        img->setHeight(300);
-        qIn->send(img);
+        if(inRgb) {
+            frame = inRgb->getCvFrame();
+            std::stringstream fpsStr;
+            fpsStr << "NN fps: " << std::fixed << std::setprecision(2) << fps;
+            cv::putText(frame, fpsStr.str(), cv::Point(2, inRgb->getHeight() - 4), cv::FONT_HERSHEY_TRIPLEX, 0.4, color2);
+        }
 
-        auto inDet = qDet->get<dai::ImgDetections>();
-        auto detections = inDet->detections;
+        if(inDet) {
+            detections = inDet->detections;
+        }
 
-        displayFrame("inFrame", frame, detections);
+        if(!frame.empty()) {
+            displayFrame("video", frame, detections);
+        }
 
         int key = cv::waitKey(1);
-        if(key == 'q' || key == 'Q') return 0;
+        if(key == 'q' || key == 'Q') {
+            return 0;
+        }
     }
     return 0;
 }
