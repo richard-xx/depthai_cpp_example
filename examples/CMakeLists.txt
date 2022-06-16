@@ -149,7 +149,7 @@ target_compile_definitions(rgb_encoding_mono_mobilenet_depth PRIVATE BLOB_PATH="
 target_compile_definitions(rgb_encoding_mobilenet PRIVATE BLOB_PATH="${mobilenet_blob}")
 
 # MobileNet
-dai_add_example(camera_mobilenet_sync MobileNet/camera_mobilenet_sync_example.cpp)
+dai_add_example(camera_mobilenet_sync MobileNet/camera_mobilenet_sync_example.cpp -lpthread -lm)
 dai_add_example(rgb_mobilenet MobileNet/rgb_mobilenet.cpp)
 dai_add_example(rgb_mobilenet_4k MobileNet/rgb_mobilenet_4k.cpp)
 dai_add_example(mono_mobilenet MobileNet/mono_mobilenet.cpp)

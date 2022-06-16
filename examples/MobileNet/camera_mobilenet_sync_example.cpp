@@ -94,10 +94,10 @@ int main(int argc, char** argv) {
 
                 // Draw all detections
                 for(const auto& d : prevResult->detections) {
-                    int x1 = d.xmin * frame.cols;
-                    int y1 = d.ymin * frame.rows;
-                    int x2 = d.xmax * frame.cols;
-                    int y2 = d.ymax * frame.rows;
+                    int x1 = int(d.xmin * float(frame.cols));
+                    int y1 = int(d.ymin * float(frame.rows));
+                    int x2 = int(d.xmax * float(frame.cols));
+                    int y2 = int(d.ymax * float(frame.rows));
                     cv::rectangle(frame, cv::Rect(cv::Point(x1, y1), cv::Point(x2, y2)), cv::Scalar(255, 255, 255));
                 }
 
