@@ -14,7 +14,7 @@
 + depthai-core-v{version}-win32-no-opencv.zip
 + depthai-core-v{version}.tar.gz
 
-## Debian/Ubuntu
+## Ubuntu
 
 ```shell
 sudo apt update

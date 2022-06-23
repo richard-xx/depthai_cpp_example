@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.10)
-include("cmake/HunterGate.cmake")
-HunterGate(
-        URL "https://github.com/cpp-pm/hunter/archive/v0.24.1.tar.gz"
-        SHA1 "4942227a6e6f5e64414c55b97ef98609de199d18"
-        # LOCAL
-)
+if (${USE_NETWORK_SOURCE})
+    include("cmake/HunterGate.cmake")
+    HunterGate(
+            URL "https://github.com/cpp-pm/hunter/archive/v0.24.1.tar.gz"
+            SHA1 "4942227a6e6f5e64414c55b97ef98609de199d18"
+            # LOCAL
+    )
+endif ()
+
 
 project("DepthaiExample")
 set(CMAKE_CXX_STANDARD 14)
@@ -160,7 +163,7 @@ if (OpenCV_FOUND)
 endif ()
 
 add_subdirectory(get_network_info)
-
+add_subdirectory(perspectiveMatrix)
 
 if (WIN32)
     # https://cmake.org/cmake/help/latest/command/file.html#get-runtime-dependencies
