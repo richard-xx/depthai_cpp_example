@@ -47,7 +47,7 @@ sudo apt install depthai
 
 ```shell
 mkdir build 
-cmake -S . -B build 
+cmake -S . -B build -DUSE_NETWORK_SOURCE=ON
 cmake --build build 
 # cmake --build build --target ...
 ```
@@ -55,12 +55,13 @@ cmake --build build
 ## Windows
 
 ```shell
-cmake -S . -B build -D"depthai_DIR=<path>/depthai-core-v{version}-win64/lib/cmake/depthai" -D"OpenCV_DIR=<path>/opencv/build"
+cmake -S . -B build -DUSE_NETWORK_SOURCE=ON -D"depthai_DIR=<path>/depthai-core-v{version}-win64/lib/cmake/depthai" -D"OpenCV_DIR=<path>/opencv/build"
 cmake --build build
 # cmake --build build --target ...
 ```
 
 > Tips:
+> + `-DUSE_NETWORK_SOURCE=ON/OFF`: 指定是否使用 `hunter` 下载模型文件, 默认为 `OFF`, 本地文件可在 [release](https://github.com/richard-xx/depthai_cpp_example/releases) 下载 
 > + `-D"depthai_DIR=<path>"`: 手动指定 `depthai` 路径
 > + `-D"OpenCV_DIR=<path>"`: 手动指定 `OpenCV` 路径
 > + `-DCMAKE_BUILD_TYPE=Release/Debug/...`: 指定 CMAKE 构建类型

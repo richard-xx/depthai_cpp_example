@@ -163,7 +163,6 @@ if (OpenCV_FOUND)
 endif ()
 
 add_subdirectory(get_network_info)
-add_subdirectory(perspectiveMatrix)
 
 if (WIN32)
     # https://cmake.org/cmake/help/latest/command/file.html#get-runtime-dependencies
