@@ -26,7 +26,7 @@
 + depthai-core-v{version}-win32-no-opencv.zip
 + depthai-core-v{version}.tar.gz
 
-### Ubuntu 18+
+### Ubuntu 16+ / Debian 9+
 
 ```shell
 sudo apt update
@@ -41,7 +41,7 @@ sudo apt install depthai_2.15.3_amd64.deb
 > 支持架构 ： amd64(x86_64) arm64(aarch64) armhf(arm32)
 
 ```shell
-sudo wget -O - https://richard-xx.github.io/ppa/depthai/KEY.gpg | sudo tee /etc/apt/trusted.gpg.d/richard_depthai.asc
+sudo wget -O - https://richard-xx.github.io/ppa/depthai/richard_depthai.gpg | sudo tee /etc/apt/trusted.gpg.d/richard_depthai.gpg
 sudo wget -O /etc/apt/sources.list.d/depthai-ppa.list https://richard-xx.github.io/ppa/depthai/depthai-ppa.list
 sudo apt update
 sudo apt install depthai
