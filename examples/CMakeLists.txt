@@ -92,7 +92,7 @@ if (${USE_NETWORK_SOURCE})
             FILE "normalize_openvino_2021.4_4shave.blob"
             LOCATION normalization_model
     )
-else()
+else ()
     set(mobilenet_blob "models/mobilenet-ssd_openvino_2021.4_6shave.blob")
     set(tiny_yolo_v3_blob "models/yolo-v3-tiny-tf_openvino_2021.4_6shave.blob")
     set(tiny_yolo_v4_blob "models/yolo-v4-tiny-tf_openvino_2021.4_6shave.blob")
@@ -105,17 +105,20 @@ else()
     set(person_detection "models/person-detection-retail-0013_openvino_2021.4_7shave.blob")
     set(concat_model "models/concat_openvino_2021.4_6shave.blob")
     set(normalization_model "models/normalize_openvino_2021.4_4shave.blob")
-#    file(GLOB models "models/*")
+    #    file(GLOB models "models/*")
     file(COPY models DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-    file(INSTALL models DESTINATION "${INSTALL_BINDIR}")
+    install(DIRECTORY models DESTINATION "${INSTALL_BINDIR}")
 
-endif()
+endif ()
 
 # bootloader
 dai_add_example(bootloader_version bootloader/bootloader_version.cpp)
 dai_add_example(flash_bootloader bootloader/flash_bootloader.cpp)
 dai_add_example(bootloader_config bootloader/bootloader_config.cpp)
 dai_add_example(poe_set_ip bootloader/poe_set_ip.cpp)
+dai_add_example(read_flash_memory bootloader/read_flash_memory.cpp)
+dai_add_example(write_flash_memory bootloader/write_flash_memory.cpp)
+dai_add_example(flash_boot_header bootloader/flash_boot_header.cpp)
 
 # calibration
 dai_add_example(calibration_flash calibration/calibration_flash.cpp)
@@ -150,10 +153,13 @@ dai_add_example(image_manip ImageManip/image_manip_example.cpp)
 dai_add_example(image_manip_rotate ImageManip/image_manip_rotate.cpp)
 dai_add_example(image_manip_tiling ImageManip/image_manip_tiling.cpp)
 dai_add_example(rgb_rotate_warp ImageManip/rgb_rotate_warp.cpp)
+dai_add_example(image_manip_warp_mesh ImageManip/image_manip_warp_mesh.cpp)
 
 # IMU
 dai_add_example(imu_gyroscope_accelerometer IMU/imu_gyroscope_accelerometer.cpp)
 dai_add_example(imu_rotation_vector IMU/imu_rotation_vector.cpp)
+dai_add_example(imu_firmware_update IMU/imu_firmware_update.cpp)
+
 
 # mixed
 dai_add_example(mono_depth_mobilenetssd mixed/mono_depth_mobilenetssd.cpp)

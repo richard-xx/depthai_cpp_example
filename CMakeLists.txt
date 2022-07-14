@@ -68,17 +68,29 @@ function(dai_add_example example_name example_src)
 
     # 添加示例
     add_executable(${example_name} ${example_src})
-    target_link_libraries(${example_name} PRIVATE utility depthai::opencv ${arguments})
+    target_link_libraries(${example_name} PRIVATE utility depthai::opencv Threads::Threads ${arguments})
     if (WIN32)
+        # Copy dlls to target directory - Windows only
+        # TARGET_RUNTIME_DLLS generator expression available since CMake 3.21
+        if(CMAKE_VERSION VERSION_LESS "3.21")
+            file(GLOB depthai_dll_libraries "${depthai_DIR}/dependencies/bin/*.dll")
+        else()
+            set(depthai_dll_libraries "$<TARGET_RUNTIME_DLLS:${example_name}>")
+        endif()
+
         add_custom_command(TARGET ${example_name}
                 # 在目标中的所有其他规则都已执行后运行
                 POST_BUILD
                 # 指定要在构建时执行的命令行
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:${example_name}> $<TARGET_FILE_DIR:${example_name}>
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different ${depthai_dll_libraries} $<TARGET_FILE_DIR:${example_name}>
                 # 参数中的列表COMMAND将被扩展, 包括那些用生成器表达式创建的列表
                 COMMAND_EXPAND_LISTS
                 )
-        install(TARGETS ${example_name} RUNTIME_DEPENDENCY_SET runtime_set)
+        if(CMAKE_VERSION VERSION_LESS "3.21")
+            install(TARGETS ${example_name})
+        else()
+            install(TARGETS ${example_name} RUNTIME_DEPENDENCY_SET runtime_set)
+        endif()
     else ()
         install(TARGETS ${example_name})
     endif ()
@@ -165,13 +177,15 @@ endif ()
 add_subdirectory(get_network_info)
 
 if (WIN32)
-    # https://cmake.org/cmake/help/latest/command/file.html#get-runtime-dependencies
-    # https://cmake.org/cmake/help/latest/command/install.html#installing-runtime-dependencies
-    # 安装运行时依赖项
-    install(RUNTIME_DEPENDENCY_SET runtime_set
-            # 预包含正则表达式列表，通过这些正则表达式过滤尚未解决的依赖项的名称。
-            PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
-            # 用于过滤已解析依赖项名称的排除后正则表达式列表。
-            POST_EXCLUDE_REGEXES ".*system32/.*\\.dll"
-            )
+    if (CMAKE_VERSION VERSION_MORE "3.21")
+        # https://cmake.org/cmake/help/latest/command/file.html#get-runtime-dependencies
+        # https://cmake.org/cmake/help/latest/command/install.html#installing-runtime-dependencies
+        # 安装运行时依赖项
+        install(RUNTIME_DEPENDENCY_SET runtime_set
+                # 预包含正则表达式列表，通过这些正则表达式过滤尚未解决的依赖项的名称。
+                PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
+                # 用于过滤已解析依赖项名称的排除后正则表达式列表。
+                POST_EXCLUDE_REGEXES ".*system32/.*\\.dll"
+                )
+    endif ()
 endif ()
