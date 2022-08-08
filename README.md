@@ -1,6 +1,7 @@
 - [安装依赖](#安装依赖)
   - [使用预编译包](#使用预编译包)
-    - [Ubuntu 18+](#ubuntu-18)
+    - [Ubuntu 16+](#ubuntu-16--debian-9)
+      - [PPA](#ppa)
     - [Windows](#windows)
   - [从源码编译](#从源码编译)
     -   [依赖项](#依赖项)
@@ -66,6 +67,8 @@ sudo apt install depthai
   > Ubuntu 可通过 _[Kitware APT Repository](https://apt.kitware.com/)_ 安装最新 CMake 或者通过 [pip](https://pypi.org/project/cmake/) 安装
   > 
   >_[GCC 5](https://gcc.gnu.org/projects/cxx-status.html#cxx14) 或 [Clang 3.4](https://clang.llvm.org/cxx_status.html#cxx14)_ 以上版本 支持 C/C++14
+  > 
+  > 推荐使用 gcc 7 以上
   > 
 
 ```shell
