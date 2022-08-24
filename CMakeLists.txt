@@ -177,7 +177,7 @@ endif ()
 add_subdirectory(get_network_info)
 
 if (WIN32)
-    if (CMAKE_VERSION VERSION_MORE "3.21")
+    if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.21")
         # https://cmake.org/cmake/help/latest/command/file.html#get-runtime-dependencies
         # https://cmake.org/cmake/help/latest/command/install.html#installing-runtime-dependencies
         # 安装运行时依赖项
