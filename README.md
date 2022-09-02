@@ -80,10 +80,31 @@ cmake --build depthai-core/build --target install
 ```
 
 # 编译
+## 下载
+可使用 git clone
+```shell
+git clone https://github.com/richard-xx/depthai_cpp_example.git 
+```
+
+或直接下载 zip
+
+## 目录结构
+`depthai_cpp_example`
+```shell
+
+.
+├── cmake
+├── CMakeLists.txt
+├── examples
+├── get_network_info
+├── README.md
+└── utility
+```
 
 ## Linux
 
 ```shell
+cd <path>depthai_cpp_example
 mkdir build 
 cmake -S . -B build 
 cmake --build build 
@@ -93,6 +114,7 @@ cmake --build build
 ## Windows
 
 ```shell
+cd <path>depthai_cpp_example
 cmake -S . -B build -D"depthai_DIR=<path>/depthai-core-v{version}-win64/lib/cmake/depthai" -D"OpenCV_DIR=<path>/opencv/build"
 cmake --build build
 # cmake --build build --target ...
@@ -103,7 +125,9 @@ cmake --build build
 > + `-D"depthai_DIR=<path>"`: 手动指定 `depthai` 路径
 > + `-D"OpenCV_DIR=<path>"`: 手动指定 `OpenCV` 路径
 > + `-DCMAKE_BUILD_TYPE=Release/Debug/...`: 指定 CMAKE 构建类型
-> + `-DUSE_NETWORK_SOURCE=ON/OFF`: 是否 不使用 release 中文件
+> + `-DUSE_NETWORK_SOURCE=ON` 使用 hunter 下载资源文件
+> + `-DUSE_NETWORK_SOURCE=OFF` 手动将 [models.zip](https://github.com/richard-xx/depthai_cpp_example/releases/) 文件下载解压后放到 examples/models 文件夹下
+
 
 `OpenCV_DIR=<path>/opencv/build` 目录结构：
 
