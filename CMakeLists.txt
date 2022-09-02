@@ -68,29 +68,31 @@ function(dai_add_example example_name example_src)
 
     # 添加示例
     add_executable(${example_name} ${example_src})
-    target_link_libraries(${example_name} PRIVATE utility depthai::opencv Threads::Threads ${arguments})
+    target_link_libraries(${example_name} PRIVATE utility depthai::opencv usb-1.0 Threads::Threads ${arguments})
     if (WIN32)
         # Copy dlls to target directory - Windows only
         # TARGET_RUNTIME_DLLS generator expression available since CMake 3.21
-        if(CMAKE_VERSION VERSION_LESS "3.21")
+        if (CMAKE_VERSION VERSION_LESS "3.21")
             file(GLOB depthai_dll_libraries "${depthai_DIR}/dependencies/bin/*.dll")
-        else()
+        else ()
             set(depthai_dll_libraries "$<TARGET_RUNTIME_DLLS:${example_name}>")
-        endif()
+        endif ()
 
         add_custom_command(TARGET ${example_name}
                 # 在目标中的所有其他规则都已执行后运行
                 POST_BUILD
                 # 指定要在构建时执行的命令行
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different ${depthai_dll_libraries} $<TARGET_FILE_DIR:${example_name}>
-                # 参数中的列表COMMAND将被扩展, 包括那些用生成器表达式创建的列表
+                # 参数中的列表 COMMAND 将被扩展, 包括那些用生成器表达式创建的列表
                 COMMAND_EXPAND_LISTS
                 )
-        if(CMAKE_VERSION VERSION_LESS "3.21")
+
+        if (CMAKE_VERSION VERSION_LESS "3.21")
             install(TARGETS ${example_name})
-        else()
+            install(FILES ${depthai_dll_libraries})
+        else ()
             install(TARGETS ${example_name} RUNTIME_DEPENDENCY_SET runtime_set)
-        endif()
+        endif ()
     else ()
         install(TARGETS ${example_name})
     endif ()
@@ -150,7 +152,7 @@ if (depthai_FOUND)
         set(STACK_DETAILS_AUTO_DETECT FALSE)
         message(CHECK_START "Finding Backward")
         find_package(Backward CONFIG REQUIRED QUIET)
-        message(CHECK_PASS "${Backward_DIR} (version: ${Backward_VERSION}) ")
+        message(CHECK_PASS "${Backward_DIR} (version: ${Backward_VERSION})")
         set(STACK_DETAILS_AUTO_DETECT)
     endif ()
 
