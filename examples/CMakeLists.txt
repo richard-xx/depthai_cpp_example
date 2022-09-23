@@ -166,6 +166,8 @@ dai_add_example(mono_depth_mobilenetssd mixed/mono_depth_mobilenetssd.cpp)
 dai_add_example(rgb_encoding_mono_mobilenet mixed/rgb_encoding_mono_mobilenet.cpp)
 dai_add_example(rgb_encoding_mono_mobilenet_depth mixed/rgb_encoding_mono_mobilenet_depth.cpp)
 dai_add_example(rgb_encoding_mobilenet mixed/rgb_encoding_mobilenet.cpp)
+dai_add_example(multiple_devices mixed/multiple_devices.cpp)
+dai_add_example(frame_sync mixed/frame_sync.cpp)
 
 target_compile_definitions(mono_depth_mobilenetssd PRIVATE BLOB_PATH="${mobilenet_blob}")
 target_compile_definitions(rgb_encoding_mono_mobilenet PRIVATE BLOB_PATH="${mobilenet_blob}")
@@ -219,6 +221,11 @@ dai_add_example(script_http_server Script/script_http_server.cpp)
 dai_add_example(script_mjpeg_server Script/script_mjpeg_server.cpp)
 dai_add_example(script_nndata_example Script/script_nndata_example.cpp)
 dai_add_example(script_json_communication Script/script_json_communication.cpp)
+dai_add_example(script_change_pipeline_flow Script/script_change_pipeline_flow.cpp)
+dai_add_example(script_get_device_info Script/script_get_device_info.cpp)
+
+target_compile_definitions(script_change_pipeline_flow PRIVATE BLOB_PATH="${mobilenet_5shaves_blob}")
+
 
 # SpatialDetection
 dai_add_example(spatial_location_calculator SpatialDetection/spatial_location_calculator.cpp)
@@ -226,6 +233,7 @@ dai_add_example(spatial_mobilenet_mono SpatialDetection/spatial_mobilenet_mono.c
 dai_add_example(spatial_mobilenet SpatialDetection/spatial_mobilenet.cpp)
 dai_add_example(spatial_tiny_yolo_v3 SpatialDetection/spatial_tiny_yolo.cpp)
 dai_add_example(spatial_tiny_yolo_v4 SpatialDetection/spatial_tiny_yolo.cpp)
+dai_add_example(spatial_calculator_multi_roi SpatialDetection/spatial_calculator_multi_roi.cpp)
 
 target_compile_definitions(spatial_mobilenet_mono PRIVATE BLOB_PATH="${mobilenet_blob}")
 target_compile_definitions(spatial_mobilenet PRIVATE BLOB_PATH="${mobilenet_blob}")
