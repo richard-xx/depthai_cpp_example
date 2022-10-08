@@ -120,6 +120,18 @@ cmake --build=build
 # cmake --build=build --target ...
 ```
 
+### 编译完成后
+
+可在 `build/bin` 目录下看到编译的结果，可双击执行或在命令行中执行。
+
+例如：
+
+```shell
+cd build/bin
+./rgb_preview
+```
+
+
 > Tips:
 >
 > + `-D"depthai_DIR=<path>"`: 手动指定 `depthai` 路径
