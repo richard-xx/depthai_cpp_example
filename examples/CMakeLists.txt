@@ -114,6 +114,7 @@ endif ()
 # bootloader
 dai_add_example(bootloader_version bootloader/bootloader_version.cpp)
 dai_add_example(flash_bootloader bootloader/flash_bootloader.cpp)
+dai_add_example(flash_user_bootloader bootloader/flash_user_bootloader.cpp)
 dai_add_example(bootloader_config bootloader/bootloader_config.cpp)
 dai_add_example(poe_set_ip bootloader/poe_set_ip.cpp)
 dai_add_example(read_flash_memory bootloader/read_flash_memory.cpp)
@@ -126,6 +127,7 @@ dai_add_example(calibration_flash_version5 calibration/calibration_flash_v5.cpp)
 dai_add_example(calibration_load calibration/calibration_load.cpp)
 dai_add_example(calibration_reader calibration/calibration_reader.cpp)
 dai_add_example(calibration_dump calibration/calibration_dump.cpp)
+dai_add_example(calibration_factory_reset calibration/calibration_factory_reset.cpp)
 
 target_compile_definitions(calibration_flash PRIVATE CALIB_PATH="${calib_v6}")
 target_compile_definitions(calibration_flash_version5 PRIVATE CALIB_PATH="${calib_v5}" BOARD_PATH="${device_config}")
@@ -147,6 +149,7 @@ dai_add_example(feature_tracker FeatureTracker/feature_tracker.cpp)
 dai_add_example(device_queue_event host_side/device_queue_event.cpp)
 dai_add_example(opencv_support host_side/opencv_support.cpp)
 dai_add_example(queue_add_callback host_side/queue_add_callback.cpp)
+dai_add_example(device_information host_side/device_information.cpp)
 
 # ImageManip
 dai_add_example(image_manip ImageManip/image_manip_example.cpp)
@@ -154,6 +157,9 @@ dai_add_example(image_manip_rotate ImageManip/image_manip_rotate.cpp)
 dai_add_example(image_manip_tiling ImageManip/image_manip_tiling.cpp)
 dai_add_example(rgb_rotate_warp ImageManip/rgb_rotate_warp.cpp)
 dai_add_example(image_manip_warp_mesh ImageManip/image_manip_warp_mesh.cpp)
+
+# Warp
+dai_add_example(warp_mesh Warp/warp_mesh.cpp)
 
 # IMU
 dai_add_example(imu_gyroscope_accelerometer IMU/imu_gyroscope_accelerometer.cpp)
