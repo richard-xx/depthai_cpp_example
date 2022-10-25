@@ -107,8 +107,8 @@ git clone https://github.com/richard-xx/depthai_cpp_example.git
 cd <path>depthai_cpp_example
 mkdir build 
 cmake -S. -Bbuild 
-cmake --build=build 
-# cmake --build=build --target ...
+cmake --build build 
+# cmake --build build --target ...
 ```
 
 ## Windows
@@ -116,8 +116,8 @@ cmake --build=build
 ```shell
 cd <path>depthai_cpp_example
 cmake -S. -Bbuild -D"depthai_DIR=<path>/depthai-core-v{version}-win64/lib/cmake/depthai" -D"OpenCV_DIR=<path>/opencv/build"
-cmake --build=build
-# cmake --build=build --target ...
+cmake --build build
+# cmake --build build --target ...
 ```
 
 ### 编译完成后
