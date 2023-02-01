@@ -1,5 +1,6 @@
 #include <chrono>
 #include <iomanip>
+
 #include "utility.hpp"
 
 // Includes common necessary includes for development using depthai library

@@ -109,14 +109,8 @@ int main(int argc, char** argv) {
         }
 
         printf("===================== %lu detection(s) =======================\n", static_cast<unsigned long>(dets.size()));
-        for(auto & det : dets) {
-            printf("%5d | %6.4f | %7.4f | %7.4f | %7.4f | %7.4f\n",
-                   det.label,
-                   det.score,
-                   det.x_min,
-                   det.y_min,
-                   det.x_max,
-                   det.y_max);
+        for(auto& det : dets) {
+            printf("%5d | %6.4f | %7.4f | %7.4f | %7.4f | %7.4f\n", det.label, det.score, det.x_min, det.y_min, det.x_max, det.y_max);
         }
 
         cv::imshow("preview", frame);

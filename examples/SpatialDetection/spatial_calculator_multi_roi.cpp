@@ -104,7 +104,6 @@ int main() {
         if(cv::waitKey(1) == 'q') {
             break;
         }
-
     }
     return 0;
 }

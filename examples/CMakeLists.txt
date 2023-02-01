@@ -137,6 +137,7 @@ target_compile_definitions(calibration_load PRIVATE CALIB_PATH="${calib_v6}")
 dai_add_example(rgb_camera_control ColorCamera/rgb_camera_control.cpp)
 dai_add_example(rgb_preview ColorCamera/rgb_preview.cpp)
 dai_add_example(rgb_video ColorCamera/rgb_video.cpp)
+dai_add_example(rgb_isp_scale ColorCamera/rgb_isp_scale.cpp)
 
 # EdgeDetector
 dai_add_example(edge_detector EdgeDetector/edge_detector.cpp)
@@ -165,7 +166,6 @@ dai_add_example(warp_mesh Warp/warp_mesh.cpp)
 dai_add_example(imu_gyroscope_accelerometer IMU/imu_gyroscope_accelerometer.cpp)
 dai_add_example(imu_rotation_vector IMU/imu_rotation_vector.cpp)
 dai_add_example(imu_firmware_update IMU/imu_firmware_update.cpp)
-
 
 # mixed
 dai_add_example(mono_depth_mobilenetssd mixed/mono_depth_mobilenetssd.cpp)
