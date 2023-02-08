@@ -120,7 +120,15 @@ cmake --build build
 # cmake --build build --target ...
 ```
 
-### 编译完成后
+> Tips:
+>
+> + `-D"depthai_DIR=<path>"`: 手动指定 `depthai` 路径
+> + `-D"OpenCV_DIR=<path>"`: 手动指定 `OpenCV` 路径
+> + `-DCMAKE_BUILD_TYPE=Release/Debug/...`: 指定 CMAKE 构建类型
+> + `-DUSE_NETWORK_SOURCE=ON` 使用 hunter 下载资源文件
+> + `-DUSE_NETWORK_SOURCE=OFF` 手动将 [models.zip](https://github.com/richard-xx/depthai_cpp_example/releases/) 文件下载解压后放到 examples/models 文件夹下
+
+## 编译完成后
 
 可在 `build/bin` 目录下看到编译的结果，可双击执行或在命令行中执行。
 
@@ -130,16 +138,6 @@ cmake --build build
 cd build/bin
 ./rgb_preview
 ```
-
-
-> Tips:
->
-> + `-D"depthai_DIR=<path>"`: 手动指定 `depthai` 路径
-> + `-D"OpenCV_DIR=<path>"`: 手动指定 `OpenCV` 路径
-> + `-DCMAKE_BUILD_TYPE=Release/Debug/...`: 指定 CMAKE 构建类型
-> + `-DUSE_NETWORK_SOURCE=ON` 使用 hunter 下载资源文件
-> + `-DUSE_NETWORK_SOURCE=OFF` 手动将 [models.zip](https://github.com/richard-xx/depthai_cpp_example/releases/) 文件下载解压后放到 examples/models 文件夹下
-
 
 `OpenCV_DIR=<path>/opencv/build` 目录结构：
 

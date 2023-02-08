@@ -1,4 +1,4 @@
-if (${USE_NETWORK_SOURCE})
+if (USE_NETWORK_SOURCE)
     # NeuralNetwork node, mobilenet example
     hunter_private_data(
             URL "https://artifacts.luxonis.com/artifactory/luxonis-depthai-data-local/network/mobilenet-ssd_openvino_2021.4_6shave.blob"
@@ -93,6 +93,9 @@ if (${USE_NETWORK_SOURCE})
             LOCATION normalization_model
     )
 else ()
+    if (NOT EXISTS models)
+        message(FATAL_ERROR "No resource exist, Please download https://github.com/richard-xx/depthai_cpp_example/releases/download/v2.16.0/models.zip and extract it to the examples directory, or set USE_NETWORK_SOURCE to ON" )
+    endif ()
     set(mobilenet_blob "models/mobilenet-ssd_openvino_2021.4_6shave.blob")
     set(tiny_yolo_v3_blob "models/yolo-v3-tiny-tf_openvino_2021.4_6shave.blob")
     set(tiny_yolo_v4_blob "models/yolo-v4-tiny-tf_openvino_2021.4_6shave.blob")

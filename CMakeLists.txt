@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
-if (${USE_NETWORK_SOURCE})
+
+option(USE_NETWORK_SOURCE "Use hunters to download resource files, such as models" ON)
+if (USE_NETWORK_SOURCE)
     include("cmake/HunterGate.cmake")
     HunterGate(
             URL "https://github.com/cpp-pm/hunter/archive/v0.24.1.tar.gz"
