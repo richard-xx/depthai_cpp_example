@@ -32,9 +32,9 @@
 ```shell
 sudo apt update
 sudo apt install -y libusb-1.0-0-dev libopencv-dev 
-# sudo apt install depthai_{version}_$(dpkg --print-architecture).deb
+# sudo apt install <path>/depthai_{version}_$(dpkg --print-architecture).deb
 # 例如
-sudo apt install depthai_2.15.3_amd64.deb
+sudo apt install ~/Downloads/depthai_2.15.3_amd64.deb
 ```
 
 #### PPA
@@ -104,7 +104,7 @@ git clone https://github.com/richard-xx/depthai_cpp_example.git
 ## Linux
 
 ```shell
-cd <path>depthai_cpp_example
+cd <path>/depthai_cpp_example
 mkdir build 
 cmake -S. -Bbuild 
 cmake --build build 
@@ -114,7 +114,7 @@ cmake --build build
 ## Windows
 
 ```shell
-cd <path>depthai_cpp_example
+cd <path>/depthai_cpp_example
 cmake -S. -Bbuild -D"depthai_DIR=<path>/depthai-core-v{version}-win64/lib/cmake/depthai" -D"OpenCV_DIR=<path>/opencv/build"
 cmake --build build
 # cmake --build build --target ...
