@@ -4,8 +4,8 @@ option(USE_NETWORK_SOURCE "Use hunters to download resource files, such as model
 if (USE_NETWORK_SOURCE)
     include("cmake/HunterGate.cmake")
     HunterGate(
-            URL "https://github.com/cpp-pm/hunter/archive/v0.24.1.tar.gz"
-            SHA1 "4942227a6e6f5e64414c55b97ef98609de199d18"
+            URL "https://github.com/cpp-pm/hunter/archive/v0.24.16.tar.gz"
+            SHA1 "09668c254f01afeca1b3d3d2e4692ed5e0e39dcc"
             # LOCAL
     )
 endif ()
@@ -91,7 +91,7 @@ function(dai_add_example example_name example_src)
 
         if (CMAKE_VERSION VERSION_LESS "3.21")
             install(TARGETS ${example_name})
-            install(FILES ${depthai_dll_libraries})
+            install(FILES ${depthai_dll_libraries} TYPE LIB )
         else ()
             install(TARGETS ${example_name} RUNTIME_DEPENDENCY_SET runtime_set)
         endif ()
@@ -179,6 +179,7 @@ if (OpenCV_FOUND)
 endif ()
 
 add_subdirectory(get_network_info)
+add_subdirectory(mine)
 
 if (WIN32)
     if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.21")
