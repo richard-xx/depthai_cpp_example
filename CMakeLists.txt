@@ -179,7 +179,7 @@ if (OpenCV_FOUND)
 endif ()
 
 add_subdirectory(get_network_info)
-add_subdirectory(mine)
+
 
 if (WIN32)
     if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.21")
