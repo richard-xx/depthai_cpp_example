@@ -154,6 +154,7 @@ dai_add_example(device_queue_event host_side/device_queue_event.cpp)
 dai_add_example(opencv_support host_side/opencv_support.cpp)
 dai_add_example(queue_add_callback host_side/queue_add_callback.cpp)
 dai_add_example(device_information host_side/device_information.cpp)
+dai_add_example(device_logging host_side/device_logging.cpp)
 
 # ImageManip
 dai_add_example(image_manip ImageManip/image_manip_example.cpp)
