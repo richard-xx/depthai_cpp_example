@@ -232,10 +232,9 @@ dai_add_example(script_mjpeg_server Script/script_mjpeg_server.cpp)
 dai_add_example(script_nndata_example Script/script_nndata_example.cpp)
 dai_add_example(script_json_communication Script/script_json_communication.cpp)
 dai_add_example(script_change_pipeline_flow Script/script_change_pipeline_flow.cpp)
-dai_add_example(script_get_device_info Script/script_get_device_info.cpp)
-
 target_compile_definitions(script_change_pipeline_flow PRIVATE BLOB_PATH="${mobilenet_5shaves_blob}")
-
+dai_add_example(script_get_device_info Script/script_get_device_info.cpp)
+dai_add_example(script_read_calibration Script/script_read_calibration.cpp)
 
 # SpatialDetection
 dai_add_example(spatial_location_calculator SpatialDetection/spatial_location_calculator.cpp)
@@ -283,3 +282,9 @@ target_compile_definitions(detection_parser PRIVATE BLOB_PATH="${mobilenet_blob}
 
 # DetectionParser
 dai_add_example(crash_report CrashReport/crash_report.cpp)
+
+# Sync
+dai_add_example(sync_scripts Sync/sync_scripts.cpp)
+dai_add_example(demux_message_group Sync/demux_message_group.cpp)
+dai_add_example(depth_video_synced Sync/depth_video_synced.cpp)
+dai_add_example(imu_video_synced Sync/imu_video_synced.cpp)

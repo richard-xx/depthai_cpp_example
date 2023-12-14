@@ -71,6 +71,11 @@ function(dai_add_example example_name example_src)
     # 添加示例
     add_executable(${example_name} ${example_src})
     target_link_libraries(${example_name} PRIVATE utility depthai::opencv usb-1.0 Threads::Threads ${arguments})
+    # Set compiler features (c++14), and disables extensions (g++14)
+    set_property(TARGET ${example_name} PROPERTY CXX_STANDARD 14)
+    set_property(TARGET ${example_name} PROPERTY CXX_STANDARD_REQUIRED ON)
+    set_property(TARGET ${example_name} PROPERTY CXX_EXTENSIONS OFF)
+    # Copy over required DLLs (Windows)
     if (WIN32)
         # Copy dlls to target directory - Windows only
         # TARGET_RUNTIME_DLLS generator expression available since CMake 3.21
@@ -87,6 +92,8 @@ function(dai_add_example example_name example_src)
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different ${depthai_dll_libraries} $<TARGET_FILE_DIR:${example_name}>
                 # 参数中的列表 COMMAND 将被扩展, 包括那些用生成器表达式创建的列表
                 COMMAND_EXPAND_LISTS
+                # 指定在构建时执行的命令行
+                VERBATIM
                 )
 
         if (CMAKE_VERSION VERSION_LESS "3.21")
