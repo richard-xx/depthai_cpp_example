@@ -1,19 +1,10 @@
-- [安装依赖](#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96)
-    - [使用预编译包](#%E4%BD%BF%E7%94%A8%E9%A2%84%E7%BC%96%E8%AF%91%E5%8C%85)
-        - [Ubuntu 16+](#ubuntu-16--debian-9)
-            - [PPA](#ppa)
-        - [Windows](#windows)
-    - [从源码编译](#%E4%BB%8E%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91)
-        - [依赖项](#%E4%BE%9D%E8%B5%96%E9%A1%B9)
-- [编译](#%E7%BC%96%E8%AF%91)
-    - [Linux](#linux)
-    - [Windows](#windows-1)
 
 > 推荐使用 cmake 3.21 以上版本
 
-# 安装依赖
+# 1.安装依赖
 
-## 使用预编译包
+
+## 1.2 使用预编译包
 
 前往 [depthai-core](https://gitee.com/oakchina/depthai-core/releases) 下载 `depthai-core` 预编译文件
 
@@ -39,7 +30,7 @@ sudo apt install ~/Downloads/depthai_2.15.3_amd64.deb
 
 #### PPA
 
-> 支持架构 ： amd64(x86_64) arm64(aarch64) armhf(arm32)
+> 支持架构：amd64(x86_64) arm64(aarch64) armhf(arm32)
 
 ```shell
 sudo wget -O - https://richard-xx.github.io/ppa/depthai/richard_depthai.gpg | sudo tee /etc/apt/trusted.gpg.d/richard_depthai.gpg
@@ -54,7 +45,9 @@ sudo apt install depthai
 
 解压对应 `depthai-core` 压缩包即可
 
-## 从源码编译
+----
+
+## 1.2 从源码编译
 
 根据 [depthai-core](https://github.com/luxonis/depthai-core) 仓库，编译 deptahi
 
@@ -79,8 +72,8 @@ cmake -Hdepthai-core -Bdepthai-core/build -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL
 cmake --build depthai-core/build --target install
 ```
 
-# 编译
-## 下载
+# 2. 编译
+## 2.1 下载
 可使用 git clone
 ```shell
 git clone https://github.com/richard-xx/depthai_cpp_example.git 
@@ -88,7 +81,7 @@ git clone https://github.com/richard-xx/depthai_cpp_example.git
 
 或直接下载 zip
 
-## 目录结构
+## 2.2 目录结构
 `depthai_cpp_example`
 ```shell
 
@@ -101,7 +94,9 @@ git clone https://github.com/richard-xx/depthai_cpp_example.git
 └── utility
 ```
 
-## Linux
+## 2.3 编译
+
+### Linux
 
 ```shell
 cd <path>/depthai_cpp_example
@@ -111,7 +106,7 @@ cmake --build build
 # cmake --build build --target ...
 ```
 
-## Windows
+### Windows
 
 ```shell
 cd <path>/depthai_cpp_example
@@ -122,13 +117,13 @@ cmake --build build
 
 > Tips:
 >
-> + `-D"depthai_DIR=<path>"`: 手动指定 `depthai` 路径
-> + `-D"OpenCV_DIR=<path>"`: 手动指定 `OpenCV` 路径
+> + `-D"depthai_DIR=<path>"`: 手动指定 `depthai` 路径，目录结构参考下方 `注` 内容
+> + `-D"OpenCV_DIR=<path>"`: 手动指定 `OpenCV` 路径，目录结构参考下方 `注` 内容
 > + `-DCMAKE_BUILD_TYPE=Release/Debug/...`: 指定 CMAKE 构建类型
 > + `-DUSE_NETWORK_SOURCE=ON` 使用 hunter 下载资源文件
 > + `-DUSE_NETWORK_SOURCE=OFF` 手动将 [models.zip](https://github.com/richard-xx/depthai_cpp_example/releases/) 文件下载解压后放到 examples/models 文件夹下
 
-## 编译完成后
+## 2.4 编译完成后
 
 可在 `build/bin` 目录下看到编译的结果，可双击执行或在命令行中执行。
 
@@ -138,29 +133,30 @@ cmake --build build
 cd build/bin
 ./rgb_preview
 ```
-
-`OpenCV_DIR=<path>/opencv/build` 目录结构：
-
-```shell
-├───bin
-├───etc
-├───include
-├───java
-├───python
-├───x64
-├───LICENSE
-├───OpenCVConfig.cmake
-├───OpenCVConfig-version.cmake
-└───setup_vars_opencv4.cmd
-```
-
-`depthai_DIR=<path>/depthai-core-v{version}-win64/lib/cmake/depthai` 目录结构：
-
-```shell
-├── dependencies
-├── depthaiConfig.cmake
-├── depthaiConfigVersion.cmake
-├── depthaiDependencies.cmake
-├── depthaiTargets.cmake
-└── depthaiTargets-release.cmake
-```
+> 注： 
+> 
+> `OpenCV_DIR=<path>/opencv/build` 目录结构：
+>
+>     ```shell
+>     ├───bin
+>     ├───etc
+>     ├───include
+>     ├───java
+>     ├───python
+>     ├───x64
+>     ├───LICENSE
+>     ├───OpenCVConfig.cmake
+>     ├───OpenCVConfig-version.cmake
+>     └───setup_vars_opencv4.cmd
+>     ```
+>
+> `depthai_DIR=<path>/depthai-core-v{version}-win64/lib/cmake/depthai` 目录结构：
+>
+>     ```shell
+>     ├── dependencies
+>     ├── depthaiConfig.cmake
+>     ├── depthaiConfigVersion.cmake
+>     ├── depthaiDependencies.cmake
+>     ├── depthaiTargets.cmake
+>     └── depthaiTargets-release.cmake
+>     ```
